@@ -32,6 +32,10 @@ if (isInstall(args)) {
 		.then(displayImages)
 		.catch(errorHandler);
 
+	ps.stdout.on('data', function (data) {
+		console.log(data.toString());
+	});
+
 	ps.on('exit', function (code) {
 		if (gif) {
 			gif.kill();
@@ -48,7 +52,7 @@ function isInstall (args) {
 function npm (args) {
 	return spawn('npm', args, {
 		cwd: process.cwd(),
-		stdio: isInstall(args) ? 'ignore' : 'inherit'
+		stdio: isInstall(args) ? 'pipe' : 'inherit'
 	});
 }
 
